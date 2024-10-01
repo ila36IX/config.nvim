@@ -94,6 +94,8 @@ vim.g.maplocalleader = ' '
 vim.g.have_nerd_font = true
 vim.g.colorconversion = 80
 
+vim.g.transparent_groups = vim.list_extend(vim.g.transparent_groups or {}, { 'ExtraGroup' })
+
 -- [[ Setting options ]]
 -- See `:help vim.opt`
 -- NOTE: You can change these options as you wish!
@@ -198,11 +200,50 @@ vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper win
 -- Key maps for the Neotree
 vim.keymap.set('n', '<C-b>', ':Neotree<CR>', { desc = 'Show the neoTree' })
 vim.keymap.set('t', '<C-b>', ':Neotree<CR>', { desc = 'Show the neoTree' })
+vim.keymap.set('n', '<leader>t', ':Neotree<CR>', { desc = 'Show the neoTree' })
+vim.keymap.set('t', '<leader>t', ':Neotree<CR>', { desc = 'Show the neoTree' })
 
 -- Key maps for tab hondler
 vim.keymap.set('n', '<tab>', ':tabnext<CR>', { desc = 'Go to the next tab' })
 vim.keymap.set('n', '<s-tab>', ':tabprevious<CR>', { desc = 'Go to the previous tab' })
 vim.keymap.set('n', '<leader>x', ':w<CR>:tabc<CR>', { desc = 'Close current tab ans save' })
+
+-- Fixing the long name of tab
+-- Function to get only the file name from a full path
+
+local function get_file_name(file_path)
+  return vim.fn.fnamemodify(file_path, ':t')
+end
+
+-- Custom tabline function
+function custom_tabline()
+  local s = ''
+  for i = 1, vim.fn.tabpagenr '$' do
+    local winnr = vim.fn.tabpagewinnr(i)
+    local buflist = vim.fn.tabpagebuflist(i)
+    local bufnr = buflist[winnr]
+    local bufname = vim.fn.bufname(bufnr)
+    local file_name = get_file_name(bufname)
+
+    -- Highlight the selected tab
+    if i == vim.fn.tabpagenr() then
+      s = s .. '%#TabLineSel#'
+    else
+      s = s .. '%#TabLine#'
+    end
+
+    -- Add the file name (or [No Name] if empty)
+    s = s .. ' ' .. (file_name ~= '' and file_name or '[No Name]') .. ' '
+  end
+
+  -- Fill the rest of the tabline
+  s = s .. '%#TabLineFill#%T'
+
+  return s
+end
+
+-- Set the custom tabline
+vim.o.tabline = '%!v:lua.custom_tabline()'
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -358,7 +399,6 @@ require('lazy').setup({
         { '<leader>r', group = '[R]ename' },
         { '<leader>f', group = '[F]ind' },
         { '<leader>w', group = '[W]orkspace' },
-        { '<leader>t', group = '[T]oggle' },
         { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
       },
     },
@@ -417,6 +457,51 @@ require('lazy').setup({
 
       -- [[ Configure Telescope ]]
       -- See `:help telescope` and `:help telescope.setup()`
+
+      -- Prevent creating new tabs for files that are already open, and instead
+      -- switch to the existing tab
+      local action_state = require 'telescope.actions.state'
+      local actions = require 'telescope.actions'
+
+      local function smart_open(prompt_bufnr)
+        local selection = action_state.get_selected_entry()
+        if selection == nil then
+          print 'No file selected'
+          return
+        end
+
+        local filename = selection.filename
+        if filename == nil then
+          print 'No filename for selection'
+          return
+        end
+
+        -- Close the Telescope window
+        actions.close(prompt_bufnr)
+
+        -- Get the absolute path of the selected file
+        local absolute_filename = vim.fn.fnamemodify(filename, ':p')
+
+        -- Check if the file is already open in a window
+        local found = false
+        for _, win in ipairs(vim.api.nvim_list_wins()) do
+          local buf = vim.api.nvim_win_get_buf(win)
+          local buf_name = vim.api.nvim_buf_get_name(buf)
+
+          if vim.fn.fnamemodify(buf_name, ':p') == absolute_filename then
+            -- File is already open, switch to its window
+            vim.api.nvim_set_current_win(win)
+            found = true
+            break
+          end
+        end
+
+        -- If the file wasn't found in an existing window, open it in a new tab
+        if not found then
+          vim.cmd('tabnew ' .. vim.fn.fnameescape(absolute_filename))
+        end
+      end
+
       require('telescope').setup {
         -- You can put your default mappings / updates / etc. in here
         --  All the info you're looking for is in `:help telescope.setup()`
@@ -424,7 +509,9 @@ require('lazy').setup({
         defaults = {
           mappings = {
             i = {
-              ['<enter>'] = 'select_tab',
+              -- ['<enter>'] = 'select_tab',
+              ['<enter>'] = smart_open,
+              -- open file in a vertical window
               ['<A-v>'] = 'select_vertical',
             },
           },
@@ -871,15 +958,16 @@ require('lazy').setup({
     -- change the command in the config to whatever the name of that colorscheme is.
     --
     -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
-    'folke/tokyonight.nvim',
+    -- 'folke/tokyonight.nvim',
+    -- 'yorumicolors/yorumi.nvim',
+    'EdenEast/nightfox.nvim',
     -- 'oxfist/night-owl.nvim',
     priority = 1000, -- Make sure to load this before all the other start plugins.
     init = function()
       -- Load the colorscheme here.
       -- Like many other themes, this one has different styles, and you could load
       -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-      vim.cmd.colorscheme 'tokyonight-night'
-
+      vim.cmd.colorscheme 'carbonfox'
       -- You can configure highlights by doing something like:
       vim.cmd.hi 'Comment gui=none'
     end,
@@ -887,6 +975,12 @@ require('lazy').setup({
 
   -- Highlight todo, notes, etc in comments
   { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
+  {
+    'xiyaowong/transparent.nvim',
+    config = function()
+      require('transparent').clear_prefix 'NeoTree'
+    end,
+  },
 
   { -- Collection of various small independent plugins/modules
     'echasnovski/mini.nvim',
