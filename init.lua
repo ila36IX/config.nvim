@@ -507,10 +507,12 @@ require('lazy').setup({
         --  All the info you're looking for is in `:help telescope.setup()`
         --
         defaults = {
+          selection_strategy = 'follow',
           mappings = {
             i = {
               -- ['<enter>'] = 'select_tab',
               ['<enter>'] = smart_open,
+              ['<A-g>'] = 'select_tab',
               -- open file in a vertical window
               ['<A-v>'] = 'select_vertical',
             },
@@ -904,13 +906,13 @@ require('lazy').setup({
           -- Accept ([y]es) the completion.
           --  This will auto-import if your LSP supports it.
           --  This will expand snippets if the LSP sent a snippet.
-          ['<C-y>'] = cmp.mapping.confirm { select = true },
+          -- ['<C-y>'] = cmp.mapping.confirm { select = true },
 
           -- If you prefer more traditional completion keymaps,
           -- you can uncomment the following lines
           --['<CR>'] = cmp.mapping.confirm { select = true },
-          --['<Tab>'] = cmp.mapping.select_next_item(),
-          --['<S-Tab>'] = cmp.mapping.select_prev_item(),
+          ['<Tab>'] = cmp.mapping.select_next_item(),
+          ['<S-Tab>'] = cmp.mapping.select_prev_item(),
 
           -- Manually trigger a completion from nvim-cmp.
           --  Generally you don't need this, because nvim-cmp will display
@@ -1043,6 +1045,22 @@ require('lazy').setup({
     --    - Incremental selection: Included, see `:help nvim-treesitter-incremental-selection-mod`
     --    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
     --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
+  },
+
+  {
+    'Diogo-ss/42-header.nvim',
+    cmd = { 'Stdheader' },
+    keys = { '<F1>' },
+    opts = {
+      default_map = true, -- Default mapping <F1> in normal mode.
+      auto_update = true, -- Update header when saving.
+      user = 'aljbari', -- Your user.
+      mail = 'aljbari@student.1337.ma', -- Your mail.
+      -- add other options.
+    },
+    config = function(_, opts)
+      require('42header').setup(opts)
+    end,
   },
 
   -- The following two comments only work if you have downloaded the kickstart repo, not just copy pasted the
