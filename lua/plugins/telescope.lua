@@ -53,50 +53,6 @@ return {
     -- [[ Configure Telescope ]]
     -- See `:help telescope` and `:help telescope.setup()`
 
-    -- Prevent creating new tabs for files that are already open, and instead
-    -- switch to the existing tab
-    local action_state = require 'telescope.actions.state'
-    local actions = require 'telescope.actions'
-
-    local function smart_open(prompt_bufnr)
-      local selection = action_state.get_selected_entry()
-      if selection == nil then
-        print 'No file selected'
-        return
-      end
-
-      local filename = selection.filename
-      if filename == nil then
-        print 'No filename for selection'
-        return
-      end
-
-      -- Close the Telescope window
-      actions.close(prompt_bufnr)
-
-      -- Get the absolute path of the selected file
-      local absolute_filename = vim.fn.fnamemodify(filename, ':p')
-
-      -- Check if the file is already open in a window
-      local found = false
-      for _, win in ipairs(vim.api.nvim_list_wins()) do
-        local buf = vim.api.nvim_win_get_buf(win)
-        local buf_name = vim.api.nvim_buf_get_name(buf)
-
-        if vim.fn.fnamemodify(buf_name, ':p') == absolute_filename then
-          -- File is already open, switch to its window
-          vim.api.nvim_set_current_win(win)
-          found = true
-          break
-        end
-      end
-
-      -- If the file wasn't found in an existing window, open it in a new tab
-      if not found then
-        vim.cmd('tabnew ' .. vim.fn.fnameescape(absolute_filename))
-      end
-    end
-
     require('telescope').setup {
       -- You can put your default mappings / updates / etc. in here
       --  All the info you're looking for is in `:help telescope.setup()`
@@ -105,8 +61,7 @@ return {
         mappings = {
           i = {
             -- ['<enter>'] = 'select_tab',
-            ['<enter>'] = smart_open,
-            ['<Tab>'] = 'select_default',
+            ['<enter>'] = 'select_default',
             -- open file in a vertical window
             ['<A-v>'] = 'select_vertical',
           },
@@ -126,7 +81,10 @@ return {
 
     -- See `:help telescope.builtin`
     local builtin = require 'telescope.builtin'
-    vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = '[f]ind [F]iles' })
+    vim.keymap.set('n', '<leader>ff', function()
+      local opts = require('telescope.themes').get_ivy()
+      builtin.find_files(opts)
+    end, { desc = '[f]ind [F]iles' })
     vim.keymap.set('n', '<leader>fc', builtin.grep_string, { desc = '[f]ind [C]urrent word' })
     vim.keymap.set('n', '<leader>fw', builtin.live_grep, { desc = '[f]ind by [W]ord in all files' })
     vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = '[f]ind [H]elp' })
