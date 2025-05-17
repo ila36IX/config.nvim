@@ -61,6 +61,8 @@ return {
       { '<leader>d', group = '[D]ocument' },
       { '<leader>r', group = '[R]ename' },
       { '<leader>f', group = '[F]ind' },
+      { '<leader>y', group = '[Y]ank' },
+      { '<leader>y', group = '[R]eplace' },
       { '<leader>w', group = '[W]orkspace' },
       { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
     },

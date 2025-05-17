@@ -3,6 +3,11 @@ require 'mappings'
 -- those all my utilties and configs inside the configs directory
 require 'configs'
 
+local name = require('theme').load()
+if name then
+  vim.cmd.colorscheme(name)
+end
+
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 ----
@@ -28,13 +33,11 @@ require('lazy').setup({
 
   -- LSP Plugins
   {
-    -- `lazydev` configures Lua LSP for your Neovim config, runtime and plugins
-    -- used for completion, annotations and signatures of Neovim apis
+    -- Just for lua and nvim
     'folke/lazydev.nvim',
     ft = 'lua',
     opts = {
       library = {
-        -- Load luvit types when the `vim.uv` word is found
         { path = 'luvit-meta/library', words = { 'vim%.uv' } },
       },
     },
@@ -46,13 +49,11 @@ require('lazy').setup({
   {
     'xiyaowong/transparent.nvim',
     config = function()
-      require('transparent').clear_prefix 'NeoTree'
+      require('transparent').clear_prefix 'Telescope'
     end,
   },
 }, {
   ui = {
-    -- If you are using a Nerd Font: set icons to an empty table which will use the
-    -- default lazy.nvim defined Nerd Font icons, otherwise define a unicode icons table
     icons = vim.g.have_nerd_font and {} or {
       cmd = '⌘',
       config = '🛠',

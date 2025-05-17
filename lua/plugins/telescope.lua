@@ -60,9 +60,6 @@ return {
       defaults = {
         mappings = {
           i = {
-            -- ['<enter>'] = 'select_tab',
-            ['<enter>'] = 'select_default',
-            -- open file in a vertical window
             ['<A-v>'] = 'select_vertical',
           },
         },
@@ -87,6 +84,9 @@ return {
     end, { desc = '[f]ind [F]iles' })
     vim.keymap.set('n', '<leader>fc', builtin.grep_string, { desc = '[f]ind [C]urrent word' })
     vim.keymap.set('n', '<leader>fw', builtin.live_grep, { desc = '[f]ind by [W]ord in all files' })
+    vim.keymap.set('n', '<leader>fg', function()
+      builtin.grep_string { search = vim.fn.input 'Grep > ' }
+    end, { desc = '[f]ind [G]rep string' })
     vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = '[f]ind [H]elp' })
     vim.keymap.set('n', '<leader>fk', builtin.keymaps, { desc = '[f]ind [K]eymaps' })
     vim.keymap.set('n', '<leader>fs', builtin.builtin, { desc = '[f]ind [S]elect Telescope' })
