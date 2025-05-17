@@ -9,6 +9,7 @@
 return {
   'EdenEast/nightfox.nvim',
   -- 'oxfist/night-owl.nvim',
+  -- 'luisiacc/the-matrix.nvim',
   priority = 1000, -- Make sure to load this before all the other start plugins.
   init = function()
     -- Load the colorscheme here.

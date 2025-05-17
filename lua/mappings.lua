@@ -36,3 +36,6 @@ vim.keymap.set('n', '<tab>', ':tabnext<CR>', { desc = 'Go to the next tab' })
 vim.keymap.set('n', '<s-tab>', ':tabprevious<CR>', { desc = 'Go to the previous tab' })
 vim.keymap.set('n', '<leader>x', ':w<CR>:tabc<CR>', { desc = 'Close current tab ans save' })
 vim.keymap.set('n', '<leader>q', ':qall<CR>', { desc = 'Close current tab ans save' })
+
+-- Term toggle
+vim.keymap.set({ 'n', 't' }, '<A-v>', vim.cmd.TermToggle, { desc = 'Toggle [T]erminal', silent = true })
