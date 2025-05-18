@@ -8,16 +8,17 @@
 -- 'yorumicolors/yorumi.nvim',
 return {
   -- 'EdenEast/nightfox.nvim',
-  'olimorris/onedarkpro.nvim',
+  -- 'olimorris/onedarkpro.nvim',
   -- 'oxfist/night-owl.nvim',
   -- 'luisiacc/the-matrix.nvim',
+  'folke/tokyonight.nvim',
   priority = 1000, -- Make sure to load this before all the other start plugins.
   init = function()
     -- Load the colorscheme here.
     -- Like many other themes, this one has different styles, and you could load
     -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
     -- vim.cmd.colorscheme 'carbonfox'
-    vim.cmd.colorscheme 'onedark_dark'
+    vim.cmd.colorscheme 'tokyonight-night'
     -- You can configure highlights by doing something like:
     vim.cmd.hi 'Comment gui=none'
   end,

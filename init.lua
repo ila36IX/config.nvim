@@ -3,11 +3,6 @@ require 'mappings'
 -- those all my utilties and configs inside the configs directory
 require 'configs'
 
-local name = require('theme').load()
-if name then
-  vim.cmd.colorscheme(name)
-end
-
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 ----
@@ -29,20 +24,21 @@ vim.opt.rtp:prepend(lazypath)
 -- Use `opts = {}` to force a plugin to be loaded.
 require('lazy').setup({
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
-  { import = 'plugins' },
-
   -- LSP Plugins
   {
-    -- Just for lua and nvim
+    -- `lazydev` configures Lua LSP for your Neovim config, runtime and plugins
+    -- used for completion, annotations and signatures of Neovim apis
     'folke/lazydev.nvim',
     ft = 'lua',
     opts = {
       library = {
-        { path = 'luvit-meta/library', words = { 'vim%.uv' } },
+        -- Load luvit types when the `vim.uv` word is found
+        { path = '${3rd}/luv/library', words = { 'vim%.uv' } },
       },
     },
   },
-  { 'Bilal2453/luvit-meta', lazy = true },
+
+  { import = 'plugins' },
 
   -- Highlight todo, notes, etc in comments
   { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },

@@ -18,7 +18,7 @@ vim.keymap.set('n', '<leader>l', ':tabnext<CR>', { desc = 'Go to the next tab' }
 vim.keymap.set('n', '<leader>h', ':tabprevious<CR>', { desc = 'Go to the previous tab' })
 
 -- Term toggle
-vim.keymap.set({ 'n', 't' }, '<A-v>', vim.cmd.TermToggle, { desc = 'Toggle [T]erminal', silent = true })
+vim.keymap.set({ 'n', 't' }, '<A-s>', vim.cmd.TermToggle, { desc = 'Toggle [T]erminal', silent = true })
 
 -- Copy to system clipboard using the + register
 vim.keymap.set({ 'v', 'n' }, '<leader>yc', '"+y', { desc = 'Copy into sys-clipboard' })
