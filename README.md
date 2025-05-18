@@ -6,7 +6,7 @@ Hello neovim I start to feel you, again...
 I'll build my own small simple neovim laboratory
 
 ## links to consider
-[Learn lua](https://learnxinyminutes.com/lua/)
+[Learn lua](https://learnxinyminutes.com/lua/)  
 [Config vim using Lua](https://learnxinyminutes.com/lua/)
 
 ### Install External Dependencies
@@ -19,5 +19,5 @@ External Requirements:
   - if you have it set `vim.g.have_nerd_font` in `init.lua` to true
 
 ```sh
-git clone https://github.com/ila36IX/config.nvim.git "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
+git clone git@github.com:ila36IX/config.nvim.git "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
 ```
