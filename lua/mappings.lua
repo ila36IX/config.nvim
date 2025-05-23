@@ -40,7 +40,9 @@ vim.keymap.set({ 'v' }, '<', '<gv', { desc = 'indent to right' })
 vim.keymap.set({ 'n' }, '<Tab>', ':bn<CR>', { desc = 'Go to the next buffer' })
 vim.keymap.set({ 'n' }, '<s-Tab>', ':bp<CR>', { desc = 'Go to the previous buffer' })
 vim.keymap.set({ 'n' }, '<C-Space>', ':e#<CR>', { desc = 'Cycle between two previously used buffs' })
-vim.keymap.set({ 'n', 'i' }, '<C-b>', '<Esc>:Ex<CR>', { desc = 'Cycle between two previously used buffs' })
+
+-- Launch tree-navigation and make "gh" command hide gitignore files
+vim.keymap.set({ 'n', 'i' }, '<C-b>', '<Esc>:Ex<CR>:let g:netrw_list_hide= netrw_gitignore#Hide()<CR>gh', { desc = 'Cycle between two previously used buffs' })
 
 -- Easy quickfix navigation
 vim.keymap.set({ 'n' }, '<C-j>', ':cn<CR>', { desc = 'Next item in Quickfix' })
@@ -51,3 +53,17 @@ vim.keymap.set('n', '<leader>q', ':qall<CR>', { desc = 'Close current tab ans sa
 vim.keymap.set('n', '<leader>Q', ':qall!<CR>', { desc = 'Close current tab ans save' })
 vim.keymap.set('n', '<leader>x', ':bd<CR>', { desc = 'Close current buffer' })
 vim.keymap.set('n', '<leader>X', ':bd!<CR>', { desc = 'Close current buffer' })
+
+-- Execute in the fly
+-- Read command from the user and then redirect its output into temp buffer
+vim.keymap.set('n', '<A-e>', function()
+  local cmd = vim.fn.input('Run: ', '', 'shellcmd')
+  if cmd ~= '' then
+    vim.cmd('new | r !' .. cmd)
+    local new_win_id = vim.api.nvim_get_current_win()
+    local new_buf_nr = vim.api.nvim_win_get_buf(new_win_id)
+    vim.bo[new_buf_nr].buftype = 'nofile'
+    vim.bo[new_buf_nr].bufhidden = 'wipe'
+    vim.bo[new_buf_nr].swapfile = false
+  end
+end, { desc = 'Read command output into new temp buffer' })
