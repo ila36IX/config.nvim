@@ -14,10 +14,7 @@ ColumnLimit:     80
 BreakBeforeBraces: Allman
 
 AlignConsecutiveAssignments:
-  Enabled: true
-  AcrossEmptyLines: true
-  AcrossComments: false
-  AlignFunctionPointers: false
+  Enabled: false
 
 AlignConsecutiveDeclarations:
   Enabled: true
