@@ -55,15 +55,25 @@ vim.keymap.set('n', '<leader>x', ':bd<CR>', { desc = 'Close current buffer' })
 vim.keymap.set('n', '<leader>X', ':bd!<CR>', { desc = 'Close current buffer' })
 
 -- Execute in the fly
--- Read command from the user and then redirect its output into temp buffer
-vim.keymap.set('n', '<A-e>', function()
+-- Read command from the user and execute it
+vim.keymap.set('n', '<leader>e', function()
   local cmd = vim.fn.input('Run: ', '', 'shellcmd')
   if cmd ~= '' then
-    vim.cmd('new | r !' .. cmd)
-    local new_win_id = vim.api.nvim_get_current_win()
-    local new_buf_nr = vim.api.nvim_win_get_buf(new_win_id)
-    vim.bo[new_buf_nr].buftype = 'nofile'
-    vim.bo[new_buf_nr].bufhidden = 'wipe'
-    vim.bo[new_buf_nr].swapfile = false
+    vim.cmd('horizontal terminal ' .. cmd)
+    vim.cmd 'set number'
   end
-end, { desc = 'Read command output into new temp buffer' })
+end, { desc = 'Run inputed cmd' })
+
+-- Force stopping command execution
+vim.keymap.set({ 'n' }, '<leader>k', function()
+  local ok, job_id = pcall(function()
+    return vim.b.terminal_job_id
+  end)
+
+  if ok and job_id and job_id > 0 then
+    vim.fn.chansend(job_id, '\003') -- \003 is Ctrl-C
+  end
+end, { desc = 'Kill process' })
+
+-- Run the make program and fill Quickfix with errors if found
+vim.keymap.set({ 'n' }, '<leader>m', ':make<CR>', { desc = 'Kill process' })
