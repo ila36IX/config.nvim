@@ -14,8 +14,8 @@ vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower win
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
 -- Key maps for tab hondler
-vim.keymap.set('n', '<leader>l', ':tabnext<CR>', { desc = 'Go to the next tab' })
-vim.keymap.set('n', '<leader>h', ':tabprevious<CR>', { desc = 'Go to the previous tab' })
+vim.keymap.set('n', '<C-h>', ':tabnext<CR>', { desc = 'Go to the next tab' })
+vim.keymap.set('n', '<C-l>', ':tabprevious<CR>', { desc = 'Go to the previous tab' })
 
 -- Term toggle
 vim.keymap.set({ 'n', 't' }, '<A-s>', vim.cmd.TermToggle, { desc = 'Toggle [T]erminal', silent = true })
