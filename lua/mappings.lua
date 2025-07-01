@@ -39,7 +39,7 @@ vim.keymap.set({ 'v' }, '<', '<gv', { desc = 'indent to right' })
 -- Easy buffers navigation
 vim.keymap.set({ 'n' }, '<Tab>', ':bn<CR>', { desc = 'Go to the next buffer' })
 vim.keymap.set({ 'n' }, '<s-Tab>', ':bp<CR>', { desc = 'Go to the previous buffer' })
-vim.keymap.set({ 'n' }, '<C-Space>', ':e#<CR>', { desc = 'Cycle between two previously used buffs' })
+vim.keymap.set({ 'n' }, '<C-Space>', ':e#<CR>', { desc = 'Cycle between two previously used buffers' })
 
 -- Launch tree-navigation and make "gh" command hide gitignore files
 vim.keymap.set({ 'n', 'i' }, '<C-b>', '<Esc>:Ex<CR>:let g:netrw_list_hide= netrw_gitignore#Hide()<CR>gh', { desc = 'Cycle between two previously used buffs' })
@@ -54,10 +54,25 @@ vim.keymap.set('n', '<leader>Q', ':qall!<CR>', { desc = 'Close current tab ans s
 vim.keymap.set('n', '<leader>x', ':bd<CR>', { desc = 'Close current buffer' })
 vim.keymap.set('n', '<leader>X', ':bd!<CR>', { desc = 'Close current buffer' })
 
+-- Create the Setcmd command to replace the current command
+-- that executed when leader+e
+vim.g.cmd_to_run = ''
+vim.api.nvim_create_user_command('Setcmd', function()
+  local cmd = vim.fn.input('Cmd: ', '', 'shellcmd')
+  vim.g.cmd_to_run = cmd
+end, {})
+
 -- Execute in the fly
 -- Read command from the user and execute it
+-- Use Setcmd to replace it
 vim.keymap.set('n', '<leader>e', function()
-  local cmd = vim.fn.input('Run: ', '', 'shellcmd')
+  local cmd
+  if vim.g.cmd_to_run == '' then
+    cmd = vim.fn.input('Run: ', '', 'shellcmd')
+    vim.g.cmd_to_run = cmd
+  else
+    cmd = vim.g.cmd_to_run
+  end
   if cmd ~= '' then
     vim.cmd('horizontal terminal ' .. cmd)
     vim.cmd 'set number'
@@ -117,3 +132,4 @@ vim.api.nvim_create_user_command('AlignDelim', function()
 end, { range = true })
 
 vim.keymap.set({ 'v' }, '<leader>a', ":'<,'>AlignDelim<CR>", { desc = 'AlignDelim' })
+vim.keymap.set({ 'n' }, '<leader>m', vim.cmd.make, { desc = 'Make using makeprg' })
