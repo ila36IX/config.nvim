@@ -9,8 +9,6 @@ vim.g.transparent_groups = vim.list_extend(vim.g.transparent_groups or {}, { 'Ex
 
 -- [[ Setting options ]]
 -- See `:help vim.opt`
--- NOTE: You can change these options as you wish!
---  For more options, you can see `:help option-list`
 
 -- Make line numbers default
 vim.opt.number = true
@@ -40,6 +38,13 @@ vim.g.colorcolumn = 80
 -- Enable break indent
 vim.opt.breakindent = true
 vim.opt.smartindent = true
+
+-- indent using tab of size 8
+-- vim.opt.shiftwidth = 8
+-- vim.opt.expandtab = true -- Use tabs, not spaces
+-- vim.opt.tabstop = 8 -- Tab is 8 spaces wide
+-- vim.opt.shiftwidth = 8 -- >> indents by 8
+vim.opt.softtabstop = 8 -- <Tab> inserts a real tab
 
 -- Save undo history
 vim.opt.undofile = true
