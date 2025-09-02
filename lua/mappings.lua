@@ -42,6 +42,15 @@ vim.keymap.set({ 'n' }, '<Tab>', ':bn<CR>', { desc = 'Go to the next buffer' })
 vim.keymap.set({ 'n' }, '<s-Tab>', ':bp<CR>', { desc = 'Go to the previous buffer' })
 vim.keymap.set({ 'n' }, '<C-Space>', ':e#<CR>', { desc = 'Cycle between two buffers' })
 
+-- Launch tree-navigation and make "gh" command hide gitignore files
+vim.keymap.set(
+  { 'n', 'i' },
+  '<C-b>',
+  -- '<Esc>:Ntree<CR>:let g:netrw_list_hide= netrw_gitignore#Hide()<CR>gh',
+  '<Esc>:Ex<CR>',
+  { desc = 'Open the files tree' }
+)
+
 -- Easy quickfix navigation
 vim.keymap.set({ 'n' }, '<C-j>', ':cn<CR>', { desc = 'Next item in Quickfix' })
 vim.keymap.set({ 'n' }, '<C-k>', ':cp<CR>', { desc = 'Previous item in Quickfix' })

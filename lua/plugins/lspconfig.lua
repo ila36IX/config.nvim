@@ -100,10 +100,10 @@ return {
       underline = { severity = vim.diagnostic.severity.ERROR },
       signs = vim.g.have_nerd_font and {
         text = {
-          [vim.diagnostic.severity.ERROR] = '󰅚 ',
-          [vim.diagnostic.severity.WARN] = '󰀪 ',
-          [vim.diagnostic.severity.INFO] = '󰋽 ',
-          [vim.diagnostic.severity.HINT] = '󰌶 ',
+          [vim.diagnostic.severity.ERROR] = 'E ',
+          [vim.diagnostic.severity.WARN] = 'W ',
+          [vim.diagnostic.severity.INFO] = 'I ',
+          [vim.diagnostic.severity.HINT] = 'H ',
         },
       } or {},
       virtual_text = {
@@ -140,6 +140,7 @@ return {
       clangd = {},
       -- gopls = {},
       -- pyright = {},
+      --
       -- rust_analyzer = {},
       -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
       --
@@ -148,8 +149,10 @@ return {
       --
       -- But for many setups, the LSP (`ts_ls`) will work just fine
       -- ts_ls = {},
-      --
 
+      intelephense = {
+        filetypes = { 'blade', 'php' },
+      },
       lua_ls = {
         -- cmd = { ... },
         -- filetypes = { ... },
