@@ -22,11 +22,12 @@ vim.keymap.set({ 'n', 't' }, '<A-s>', vim.cmd.TermToggle, { desc = 'Toggle [T]er
 
 -- Copy to system clipboard using the + register
 vim.keymap.set({ 'v', 'n' }, '<leader>yc', '"+y', { desc = 'Copy into sys-clipboard' })
+vim.keymap.set({ 'v', 'n' }, '<C-c>', '"+y', { desc = 'Copy into sys-clipboard' })
 
 -- Replace selected text without yanking it
-vim.keymap.set({ 'v' }, '<leader>rs', '"_dP', { desc = 'Replace without yanking' })
+vim.keymap.set({ 'v' }, '<leader>rs', '"_dP', { desc = 'Replace seleceted with no yank' })
 -- Replace current word with yanked text without yanking it
-vim.keymap.set({ 'n' }, '<leader>rw', 'viw"_dP', { desc = 'Copy into sys-clipboard' })
+vim.keymap.set({ 'n' }, '<leader>rw', 'viw"_dP', { desc = 'Replace currword with no yank' })
 
 -- Move line Up or Down and respect line indentation
 vim.keymap.set({ 'v' }, 'J', ":m '>+1<CR>gv=gv", { desc = 'Move line to top' })
@@ -39,16 +40,16 @@ vim.keymap.set({ 'v' }, '<', '<gv', { desc = 'indent to right' })
 -- Easy buffers navigation
 vim.keymap.set({ 'n' }, '<Tab>', ':bn<CR>', { desc = 'Go to the next buffer' })
 vim.keymap.set({ 'n' }, '<s-Tab>', ':bp<CR>', { desc = 'Go to the previous buffer' })
-vim.keymap.set({ 'n' }, '<C-Space>', ':e#<CR>', { desc = 'Cycle between two previously used buffers' })
+vim.keymap.set({ 'n' }, '<C-Space>', ':e#<CR>', { desc = 'Cycle between two buffers' })
 
 -- Launch tree-navigation and make "gh" command hide gitignore files
-vim.keymap.set({ 'n', 'i' }, '<C-b>', '<Esc>:Ex<CR>:let g:netrw_list_hide= netrw_gitignore#Hide()<CR>gh', { desc = 'Cycle between two previously used buffs' })
+vim.keymap.set({ 'n', 'i' }, '<C-b>', '<Esc>:Ex<CR>', { desc = 'Cycle between two previously used buffs' })
 
 -- Easy quickfix navigation
 vim.keymap.set({ 'n' }, '<C-j>', ':cn<CR>', { desc = 'Next item in Quickfix' })
 vim.keymap.set({ 'n' }, '<C-k>', ':cp<CR>', { desc = 'Previous item in Quickfix' })
 
--- Quit
+-- Quiting
 vim.keymap.set('n', '<leader>q', ':qall<CR>', { desc = 'Close current tab ans save' })
 vim.keymap.set('n', '<leader>Q', ':qall!<CR>', { desc = 'Close current tab ans save' })
 vim.keymap.set('n', '<leader>x', ':bd<CR>', { desc = 'Close current buffer' })
@@ -77,7 +78,18 @@ vim.keymap.set('n', '<leader>e', function()
     vim.cmd('horizontal terminal ' .. cmd)
     vim.cmd 'set number'
   end
-end, { desc = 'Run inputed cmd' })
+end, { desc = 'Run saved command' })
+
+-- Execute in the fly
+-- Read command from the user and execute it
+vim.keymap.set('n', '<leader>rn', function()
+  local cmd
+  cmd = vim.fn.input('Run: ', '', 'shellcmd')
+  if cmd ~= '' then
+    vim.cmd('horizontal terminal ' .. cmd)
+    vim.cmd 'set number'
+  end
+end, { desc = 'Run the giving command' })
 
 -- Force stopping command execution
 vim.keymap.set({ 'n' }, '<leader>k', function()
@@ -93,7 +105,8 @@ end, { desc = 'Kill process' })
 -- Run the make program and fill Quickfix with errors if found
 vim.keymap.set({ 'n' }, '<leader>m', ':make<CR>', { desc = 'Kill process' })
 
-vim.api.nvim_create_user_command('AlignDelim', function()
+-- AlignDelim is simple comand that align selected text by a delimiter
+vim.api.nvim_create_user_command('AlignUsingDelim', function()
   -- Prompt for delimiter
   local delim = vim.fn.input 'delim: '
   if delim == '' then
@@ -131,5 +144,4 @@ vim.api.nvim_create_user_command('AlignDelim', function()
   vim.api.nvim_buf_set_lines(0, start_line - 1, end_line, false, lines)
 end, { range = true })
 
-vim.keymap.set({ 'v' }, '<leader>a', ":'<,'>AlignDelim<CR>", { desc = 'AlignDelim' })
 vim.keymap.set({ 'n' }, '<leader>m', vim.cmd.make, { desc = 'Make using makeprg' })

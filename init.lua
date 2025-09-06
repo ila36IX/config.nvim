@@ -67,3 +67,12 @@ require('lazy').setup({
     },
   },
 })
+
+-- Function to get active LSP client name
+function _G.LspStatus()
+  local clients = vim.lsp.get_clients { bufnr = 0 }
+  return #clients > 0 and clients[1].name or 'none'
+end
+
+-- Show the current working lsp
+vim.o.statusline = '%<%f %h%w%m%r%=%-14.(%l,%c [%L]%) [%{v:lua.LspStatus()}] %P'
