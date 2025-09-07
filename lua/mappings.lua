@@ -42,9 +42,6 @@ vim.keymap.set({ 'n' }, '<Tab>', ':bn<CR>', { desc = 'Go to the next buffer' })
 vim.keymap.set({ 'n' }, '<s-Tab>', ':bp<CR>', { desc = 'Go to the previous buffer' })
 vim.keymap.set({ 'n' }, '<C-Space>', ':e#<CR>', { desc = 'Cycle between two buffers' })
 
--- Launch tree-navigation and make "gh" command hide gitignore files
-vim.keymap.set({ 'n', 'i' }, '<C-b>', '<Esc>:Ex<CR>', { desc = 'Cycle between two previously used buffs' })
-
 -- Easy quickfix navigation
 vim.keymap.set({ 'n' }, '<C-j>', ':cn<CR>', { desc = 'Next item in Quickfix' })
 vim.keymap.set({ 'n' }, '<C-k>', ':cp<CR>', { desc = 'Previous item in Quickfix' })
@@ -55,93 +52,9 @@ vim.keymap.set('n', '<leader>Q', ':qall!<CR>', { desc = 'Close current tab ans s
 vim.keymap.set('n', '<leader>x', ':bd<CR>', { desc = 'Close current buffer' })
 vim.keymap.set('n', '<leader>X', ':bd!<CR>', { desc = 'Close current buffer' })
 
--- Create the Setcmd command to replace the current command
--- that executed when leader+e
-vim.g.cmd_to_run = ''
-vim.api.nvim_create_user_command('Setcmd', function()
-  local cmd = vim.fn.input('Cmd: ', '', 'shellcmd')
-  vim.g.cmd_to_run = cmd
-end, {})
-
--- Execute in the fly
--- Read command from the user and execute it
--- Use Setcmd to replace it
-vim.keymap.set('n', '<leader>e', function()
-  local cmd
-  if vim.g.cmd_to_run == '' then
-    cmd = vim.fn.input('Run: ', '', 'shellcmd')
-    vim.g.cmd_to_run = cmd
-  else
-    cmd = vim.g.cmd_to_run
-  end
-  if cmd ~= '' then
-    vim.cmd('horizontal terminal ' .. cmd)
-    vim.cmd 'set number'
-  end
-end, { desc = 'Run saved command' })
-
--- Execute in the fly
--- Read command from the user and execute it
-vim.keymap.set('n', '<leader>rn', function()
-  local cmd
-  cmd = vim.fn.input('Run: ', '', 'shellcmd')
-  if cmd ~= '' then
-    vim.cmd('horizontal terminal ' .. cmd)
-    vim.cmd 'set number'
-  end
-end, { desc = 'Run the giving command' })
-
--- Force stopping command execution
-vim.keymap.set({ 'n' }, '<leader>k', function()
-  local ok, job_id = pcall(function()
-    return vim.b.terminal_job_id
-  end)
-
-  if ok and job_id and job_id > 0 then
-    vim.fn.chansend(job_id, '\003') -- \003 is Ctrl-C
-  end
-end, { desc = 'Kill process' })
-
 -- Run the make program and fill Quickfix with errors if found
 vim.keymap.set({ 'n' }, '<leader>m', ':make<CR>', { desc = 'Kill process' })
 
--- AlignDelim is simple comand that align selected text by a delimiter
-vim.api.nvim_create_user_command('AlignUsingDelim', function()
-  -- Prompt for delimiter
-  local delim = vim.fn.input 'delim: '
-  if delim == '' then
-    return
-  end
-
-  -- Get visual range
-  local start_line = vim.fn.getpos("'<")[2]
-  local end_line = vim.fn.getpos("'>")[2]
-  local lines = vim.api.nvim_buf_get_lines(0, start_line - 1, end_line, false)
-
-  -- Find max delimiter position
-  local max_col = 0
-  for _, line in ipairs(lines) do
-    local col = string.find(line, delim, 1, true)
-    while col and col > 2 and line:sub(col - 1, col - 1) == ' ' do
-      col = col - 1
-    end
-    if col and col > max_col then
-      max_col = col + 1
-    end
-  end
-  -- Align using the must far away delim
-  for i, line in ipairs(lines) do
-    local start, _end = string.find(line, delim, 1, true)
-    while start and start > 2 and line:sub(start - 1, start - 1) == ' ' do
-      start = start - 1
-    end
-    if start and _end then
-      lines[i] = line:sub(0, start - 1) .. string.rep(' ', max_col - start) .. delim .. line:sub(_end + 1)
-    end
-  end
-
-  -- Replace lines in buffer
-  vim.api.nvim_buf_set_lines(0, start_line - 1, end_line, false, lines)
-end, { range = true })
-
 vim.keymap.set({ 'n' }, '<leader>m', vim.cmd.make, { desc = 'Make using makeprg' })
+
+vim.keymap.set({ 'n' }, '<leader>gs', ':Telescope git_status<CR>', { desc = '[g]it status' })

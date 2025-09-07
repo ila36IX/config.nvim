@@ -48,6 +48,17 @@ require('lazy').setup({
       require('transparent').clear_prefix 'Telescope'
     end,
   },
+  {
+    'brenton-leighton/multiple-cursors.nvim',
+    version = '*',
+    opts = {},
+    keys = {
+      { '<Leader>cc', '<Cmd>MultipleCursorsAddVisualArea<CR>', mode = { 'x' }, desc = 'Add cursors to the lines of the visual area' },
+      { '<C-d>', '<Cmd>MultipleCursorsAddJumpNextMatch<CR>', mode = { 'x' }, desc = 'Add cursor and jump to next cword' },
+      { '<C-Up>', '<Cmd>MultipleCursorsAddDown<CR>', mode = { 'n' }, desc = 'Add cursor and move down' },
+      { '<C-Down>', '<Cmd>MultipleCursorsAddUp<CR>', mode = { 'n' }, desc = 'Add cursor and move up' },
+    },
+  },
 }, {
   ui = {
     icons = vim.g.have_nerd_font and {} or {

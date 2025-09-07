@@ -1,2 +1,4 @@
 require 'configs.toggle-term'
 require 'configs.highlight-on-yank'
+require 'configs.netrw'
+require 'configs.align'
