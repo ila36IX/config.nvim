@@ -55,8 +55,8 @@ require('lazy').setup({
     keys = {
       { '<Leader>cc', '<Cmd>MultipleCursorsAddVisualArea<CR>', mode = { 'x' }, desc = 'Add cursors to the lines of the visual area' },
       { '<C-d>', '<Cmd>MultipleCursorsAddJumpNextMatch<CR>', mode = { 'x' }, desc = 'Add cursor and jump to next cword' },
-      { '<C-Up>', '<Cmd>MultipleCursorsAddDown<CR>', mode = { 'n' }, desc = 'Add cursor and move down' },
-      { '<C-Down>', '<Cmd>MultipleCursorsAddUp<CR>', mode = { 'n' }, desc = 'Add cursor and move up' },
+      { '<C-Down>', '<Cmd>MultipleCursorsAddDown<CR>', mode = { 'n' }, desc = 'Add cursor and move down' },
+      { '<C-Up>', '<Cmd>MultipleCursorsAddUp<CR>', mode = { 'n' }, desc = 'Add cursor and move up' },
     },
   },
 }, {
