@@ -22,7 +22,7 @@ end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
 
 -- Use `opts = {}` to force a plugin to be loaded.
-require('lazy').setup({
+require('lazy').setup {
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
   -- LSP Plugins
   {
@@ -48,6 +48,7 @@ require('lazy').setup({
       require('transparent').clear_prefix 'Telescope'
     end,
   },
+  -- Multi cursor config
   {
     'brenton-leighton/multiple-cursors.nvim',
     version = '*',
@@ -59,7 +60,6 @@ require('lazy').setup({
       { '<C-Up>', '<Cmd>MultipleCursorsAddUp<CR>', mode = { 'n' }, desc = 'Add cursor and move up' },
     },
   },
-}, {
   ui = {
     icons = vim.g.have_nerd_font and {} or {
       cmd = '⌘',
@@ -77,12 +77,12 @@ require('lazy').setup({
       lazy = '💤 ',
     },
   },
-})
+}
 
 -- Function to get active LSP client name
 function _G.LspStatus()
   local clients = vim.lsp.get_clients { bufnr = 0 }
-  return #clients > 0 and clients[1].name or 'none'
+  return #clients > 0 and clients[1].name or 'NO_LSP'
 end
 
 -- Show the current working lsp
