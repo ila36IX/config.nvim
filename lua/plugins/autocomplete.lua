@@ -20,12 +20,12 @@ return {
         -- `friendly-snippets` contains a variety of premade snippets.
         --    See the README about individual language/framework/plugin snippets:
         --    https://github.com/rafamadriz/friendly-snippets
-        {
-          'rafamadriz/friendly-snippets',
-          config = function()
-            require('luasnip.loaders.from_vscode').lazy_load()
-          end,
-        },
+        -- {
+        --   'rafamadriz/friendly-snippets',
+        --   config = function()
+        --     require('luasnip.loaders.from_vscode').lazy_load()
+        --   end,
+        -- },
       },
     },
     'saadparwaiz1/cmp_luasnip',
@@ -35,7 +35,10 @@ return {
     --  into multiple repos for maintenance purposes.
     'hrsh7th/cmp-nvim-lsp',
     'hrsh7th/cmp-path',
+    'hrsh7th/cmp-nvim-lsp-signature-help',
+    'hrsh7th/cmp-calc',
   },
+
   config = function()
     -- See `:help cmp`
     local cmp = require 'cmp'
@@ -92,6 +95,8 @@ return {
         { name = 'nvim_lsp' },
         { name = 'luasnip' },
         { name = 'path' },
+        { name = 'calc' },
+        { name = 'nvim_lsp_signature_help' },
       },
     }
   end,

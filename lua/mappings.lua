@@ -2,16 +2,13 @@
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
 -- Diagnostic keymaps
-vim.keymap.set('n', '<leader>d', vim.diagnostic.setloclist, { desc = 'Open [D]iagnostic quickfix list' })
+vim.keymap.set('n', '<leader>dq', vim.diagnostic.setqflist, { desc = 'Open [D]iagnostic quickfix list' })
+vim.keymap.set('n', '<leader>dn', ']d', { desc = '[D]iagnostic [N]ext' })
+vim.keymap.set('n', '<leader>dp', '[d', { desc = '[D]iagnostic [P]rev' })
+vim.keymap.set('n', '<leader>dd', vim.diagnostic.open_float, { desc = 'Open [D]iagnostic [D]etails' })
 
 -- Exit terminal mode
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
-
--- Keybinds to make split navigation easier.
-vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
-vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
-vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
-vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
 -- Key maps for tab hondler
 vim.keymap.set('n', '<C-h>', ':tabnext<CR>', { desc = 'Go to the next tab' })
@@ -43,17 +40,11 @@ vim.keymap.set({ 'n' }, '<s-Tab>', ':bp<CR>', { desc = 'Go to the previous buffe
 vim.keymap.set({ 'n' }, '<C-Space>', ':e#<CR>', { desc = 'Cycle between two buffers' })
 
 -- Launch tree-navigation and make "gh" command hide gitignore files
-vim.keymap.set(
-  { 'n', 'i' },
-  '<C-b>',
-  -- '<Esc>:Ntree<CR>:let g:netrw_list_hide= netrw_gitignore#Hide()<CR>gh',
-  '<Esc>:Ex<CR>',
-  { desc = 'Open the files tree' }
-)
+vim.keymap.set({ 'n', 'i' }, '<C-b>', '<Esc>:Ex<CR>', { desc = 'Open the files tree' })
 
 -- Easy quickfix navigation
-vim.keymap.set({ 'n' }, '<C-j>', ':cn<CR>', { desc = 'Next item in Quickfix' })
-vim.keymap.set({ 'n' }, '<C-k>', ':cp<CR>', { desc = 'Previous item in Quickfix' })
+vim.keymap.set({ 'n' }, '<C-Down>', ':cn<CR>', { desc = 'Next item in Quickfix' })
+vim.keymap.set({ 'n' }, '<C-Up>', ':cp<CR>', { desc = 'Previous item in Quickfix' })
 
 -- Quiting
 vim.keymap.set('n', '<leader>q', ':qall<CR>', { desc = 'Close current tab ans save' })
@@ -62,8 +53,56 @@ vim.keymap.set('n', '<leader>x', ':bd<CR>', { desc = 'Close current buffer' })
 vim.keymap.set('n', '<leader>X', ':bd!<CR>', { desc = 'Close current buffer' })
 
 -- Run the make program and fill Quickfix with errors if found
-vim.keymap.set({ 'n' }, '<leader>m', ':make<CR>', { desc = 'Kill process' })
-
 vim.keymap.set({ 'n' }, '<leader>m', vim.cmd.make, { desc = 'Make using makeprg' })
 
 vim.keymap.set({ 'n' }, '<leader>gs', ':Telescope git_status<CR>', { desc = '[g]it status' })
+
+function insert_new_cpp_class()
+  local className = vim.fn.input 'Class name: '
+  if className == '' then
+    return
+  end
+
+  local format = [[
+class A
+{
+    public:
+        A(void);
+        A(/* Parameters */);
+        A(const A &other);
+        A &operator=(const A &other);
+        ~A();
+};
+
+A::A(void)
+{
+}
+
+A::A(/*parameters*/)
+{
+}
+
+A::A(const A &other)
+{
+    *this = other;
+}
+
+A &A::operator=(const A &other)
+{
+    if (this != &other)
+    {
+        // _member = other._member;
+    }
+    return (*this);
+}
+
+A::~A()
+{
+}
+]]
+  local classCode = string.gsub(format, 'A', className)
+  local lines = vim.split(classCode, '\n')
+  vim.api.nvim_put(lines, 'l', true, true)
+end
+vim.keymap.set({ 'n' }, '<leader>ic', insert_new_cpp_class, { desc = '[i]nsert class' })
+vim.keymap.set({ 'n' }, '<leader>h', vim.cmd.Stdheader, { desc = '[header] for 42 files' })

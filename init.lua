@@ -56,9 +56,21 @@ require('lazy').setup {
     keys = {
       { '<Leader>cc', '<Cmd>MultipleCursorsAddVisualArea<CR>', mode = { 'x' }, desc = 'Add cursors to the lines of the visual area' },
       { '<C-d>', '<Cmd>MultipleCursorsAddJumpNextMatch<CR>', mode = { 'x' }, desc = 'Add cursor and jump to next cword' },
-      { '<C-Down>', '<Cmd>MultipleCursorsAddDown<CR>', mode = { 'n' }, desc = 'Add cursor and move down' },
-      { '<C-Up>', '<Cmd>MultipleCursorsAddUp<CR>', mode = { 'n' }, desc = 'Add cursor and move up' },
+      { '<C-j>', '<Cmd>MultipleCursorsAddDown<CR>', mode = { 'n' }, desc = 'Add cursor and move down' },
+      { '<C-k>', '<Cmd>MultipleCursorsAddUp<CR>', mode = { 'n' }, desc = 'Add cursor and move up' },
     },
+  },
+  {
+    'Diogo-ss/42-header.nvim',
+    cmd = { 'Stdheader' },
+    opts = {
+      auto_update = false,
+      user = 'aljbari',
+      mail = 'jbariali002@gmail.com',
+    },
+    config = function(_, opts)
+      require('42header').setup(opts)
+    end,
   },
   ui = {
     icons = vim.g.have_nerd_font and {} or {
@@ -82,8 +94,8 @@ require('lazy').setup {
 -- Function to get active LSP client name
 function _G.LspStatus()
   local clients = vim.lsp.get_clients { bufnr = 0 }
-  return #clients > 0 and clients[1].name or 'NO_LSP'
+  return #clients > 0 and clients[1].name or 'N/A'
 end
 
 -- Show the current working lsp
-vim.o.statusline = '%<%f %h%w%m%r%=%-14.(%l,%c [%L]%) [%{v:lua.LspStatus()}] %P'
+vim.o.statusline = '%<%f %h%w%m%r%=%-14.(%l:%c [%L]%) [%{v:lua.LspStatus()}] %P'
