@@ -2,10 +2,10 @@
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
 -- Diagnostic keymaps
-vim.keymap.set('n', '<leader>dq', vim.diagnostic.setqflist, { desc = 'Open [D]iagnostic quickfix list' })
-vim.keymap.set('n', '<leader>dn', ']d', { desc = '[D]iagnostic [N]ext' })
-vim.keymap.set('n', '<leader>dp', '[d', { desc = '[D]iagnostic [P]rev' })
-vim.keymap.set('n', '<leader>dd', vim.diagnostic.open_float, { desc = 'Open [D]iagnostic [D]etails' })
+vim.keymap.set('n', '<leader>dq', vim.diagnostic.setqflist, { desc = '[D]iagnostics qflist' })
+vim.keymap.set('n', '<leader>dn', vim.diagnostic.goto_next, { desc = '[D]iagnostics [N]ext' })
+vim.keymap.set('n', '<leader>dp', vim.diagnostic.goto_prev, { desc = '[D]iagnostics [P]rev' })
+vim.keymap.set('n', '<leader>dd', vim.diagnostic.open_float, { desc = '[D]iagnostics [D]etails' })
 
 -- Exit terminal mode
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })

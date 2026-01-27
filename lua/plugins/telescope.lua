@@ -83,14 +83,11 @@ return {
       builtin.find_files(opts)
     end, { desc = '[f]ind [F]iles' })
     vim.keymap.set('n', '<leader>fc', builtin.grep_string, { desc = '[f]ind [C]urrent word' })
-    vim.keymap.set('n', '<leader>fw', builtin.live_grep, { desc = '[f]ind by [W]ord in all files' })
-    vim.keymap.set('n', '<leader>fg', function()
-      builtin.grep_string { search = vim.fn.input 'Grep > ' }
-    end, { desc = '[f]ind [G]rep string' })
+    vim.keymap.set('n', '<leader>fw', builtin.live_grep, { desc = '[f]ind [W]ord all files' })
     vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = '[f]ind [H]elp' })
     vim.keymap.set('n', '<leader>fk', builtin.keymaps, { desc = '[f]ind [K]eymaps' })
     vim.keymap.set('n', '<leader>fs', builtin.builtin, { desc = '[f]ind [S]elect Telescope' })
-    vim.keymap.set('n', '<leader>fd', builtin.diagnostics, { desc = '[f]ind [D]iagnostics' })
+    vim.keymap.set('n', '<leader>df', builtin.diagnostics, { desc = '[D]iagnostics [f]ind' })
     vim.keymap.set('n', '<leader>fr', builtin.resume, { desc = '[f]ind [R]esume' })
     vim.keymap.set('n', '<leader>f.', builtin.oldfiles, { desc = '[f]ind Recent Files ("." for repeat)' })
     -- vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
@@ -111,33 +108,6 @@ return {
         previewer = false,
       })
     end, { desc = '[F]ind in current [B]uffer' })
-
-    -- Cd into directory
-    vim.keymap.set('n', '<leader>cd', function()
-      builtin.find_directories {
-        prompt_title = 'Select Directory to CD Into',
-        -- This function is called when a directory is selected from the picker.
-        on_confirm = function(selection)
-          -- 'selection' is a table containing information about the selected item.
-          -- For find_directories, selection[1].path will be the full path.
-          local selected_path = selection[1].path
-
-          -- -- Execute the Vim 'cd' command with the selected path.
-          -- -- 'vim.cmd' allows you to run Vim commands from Lua.
-          -- -- We use 'silent!' to suppress messages if the directory doesn't exist (though Telescope should prevent this).
-          -- -- We also use 'lcd' (local change directory) to change the directory only for the current window,
-          -- -- which is often preferred in Neovim/Vim for better session management.
-          -- -- If you prefer a global 'cd', change 'lcd' to 'cd'.
-          -- vim.cmd('silent! lcd ' .. vim.fn.fnameescape(selected_path))
-          --
-          -- -- Optionally, print a message to confirm the directory change.
-          print('Changed directory to: ' .. selected_path)
-        end,
-        -- Other options for find_directories can be added here, e.g.:
-        -- cwd = vim.fn.getcwd(), -- Start search from current working directory
-        -- hidden = true, -- Include hidden directories
-      }
-    end, { desc = '[C]hange [D]irectory' })
 
     -- It's also possible to pass additional configuration options.
     --  See `:help telescope.builtin.live_grep()` for information about particular keys

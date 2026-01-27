@@ -61,7 +61,7 @@ return {
 
         -- Execute a code action, usually your cursor needs to be on top of an error
         -- or a suggestion from your LSP for this to activate.
-        map('gra', vim.lsp.buf.code_action, '[G]oto Code [A]ction', { 'n', 'x' })
+        map('<leader>da', vim.lsp.buf.code_action, '[D]iagnostics [A]ction', { 'n', 'x' })
 
         -- Find references for the word under your cursor.
         map('grr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
@@ -112,7 +112,9 @@ return {
         format = function(diagnostic)
           local diagnostic_message = {
             [vim.diagnostic.severity.ERROR] = diagnostic.message,
-            [vim.diagnostic.severity.WARN] = diagnostic.message,
+            -- [vim.diagnostic.severity.WARN] = diagnostic.message,
+            -- Don't display warning message, use leader + dd to show warning details
+            [vim.diagnostic.severity.WARN] = '',
             [vim.diagnostic.severity.INFO] = diagnostic.message,
             [vim.diagnostic.severity.HINT] = diagnostic.message,
           }
