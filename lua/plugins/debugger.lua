@@ -116,12 +116,12 @@ return {
       -- Restart
       map('<F7>', dap.restart, 'Restart Debugger')
 
-      -- Terminate
-      -- map('<leader>de', function()
-      --   dap.terminate()
-      --   dapui.close()
-      --   dap_virtual_text.toggle()
-      -- end, '[D]ebuger [E]xit')
+      Terminate
+      map('<leader>de', function()
+        dap.terminate()
+        dapui.close()
+        dap_virtual_text.toggle()
+      end, '[D]ebugger [E]xit')
 
       dap.listeners.after.event_initialized.dapui_config = function()
         dapui.open()
