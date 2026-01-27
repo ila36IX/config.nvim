@@ -11,11 +11,45 @@ return {
     },
     config = function()
       local dap = require 'dap'
-      local ui = require 'dapui'
+      local dapui = require 'dapui'
       local mason_dap = require 'mason-nvim-dap'
       local dap_virtual_text = require 'nvim-dap-virtual-text'
 
-      ui.setup()
+      -- Setup the plugins...
+      dapui.setup {
+        icons = {
+          collapsed = '+',
+          current_frame = '*',
+          expanded = '-',
+        },
+        expand_lines = true,
+        controls = { enabled = false }, -- no extra play/step buttons
+        floating = { border = 'rounded' },
+        -- Set dapui window
+        render = {
+          max_type_length = 60,
+          max_value_lines = 200,
+        },
+        -- Only one layout: just the "scopes" (variables) list at the bottom
+        layouts = {
+          {
+            elements = {
+              { id = 'repl', size = 0.5 }, -- 100% of this panel is scopes
+              { id = 'console', size = 0.5 }, -- 100% of this panel is scopes
+            },
+            size = 10, -- height in lines (adjust to taste)
+            position = 'bottom', -- "left", "right", "top", "bottom"
+          },
+          {
+            elements = {
+              { id = 'scopes' },
+            },
+            size = 50, -- height in lines (adjust to taste)
+            position = 'left', -- "left", "right", "top", "bottom"
+          },
+        },
+      }
+
       dap_virtual_text.setup()
 
       mason_dap.setup {
@@ -35,7 +69,7 @@ return {
           type = 'cppdbg',
           request = 'launch',
           program = function()
-            return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+            return vim.fn.input('Executable > ', vim.fn.getcwd() .. '/', 'file')
           end,
           cwd = '${workspaceFolder}',
           stopAtEntry = true,
@@ -48,48 +82,55 @@ return {
         c = c_cpp_config,
       }
 
-      vim.keymap.set('n', '<space>b', dap.toggle_breakpoint)
-      vim.keymap.set('n', '<space>gb', dap.run_to_cursor)
+      local map = function(keys, func, desc, mode)
+        mode = mode or 'n'
+        desc = desc or ''
+        vim.keymap.set(mode, keys, func, { desc = desc })
+      end
 
-      -- Eval var under cursor
-      vim.keymap.set('n', '<space>?', function()
-        require('dapui').eval(nil, { enter = true })
-      end)
+      map('<leader>db', dap.toggle_breakpoint, '[D]ebugger [T]oggle breakpoint')
+
+      -- Continues execution to the current cursor
+      map('<leader>dc', dap.run_to_cursor, '[D]ebugger [C]ontinue')
+
+      -- Open a floating window containing the result of evaluting an expression
+      map('<leader>d?', function()
+        dapui.eval(nil, { enter = true })
+      end, '[D]ebugger [E]val')
 
       -- Resumes execution until the next breakpoint
-      vim.keymap.set('n', '<F1>', dap.continue)
+      map('<F1>', dap.continue)
 
       -- go into the next function call and break there
-      vim.keymap.set('n', '<F2>', dap.step_into, { desc = 'Enter function' })
+      map('<F2>', dap.step_into, 'Enter function')
 
       -- Execute the next function and break afterwards
-      vim.keymap.set('n', '<F3>', dap.step_over, { desc = 'Execute line' })
+      map('<F3>', dap.step_over, 'Execute line')
 
       -- Finish the current function and break after it
-      vim.keymap.set('n', '<F4>', dap.step_out, { desc = 'Exit function' })
+      map('<F4>', dap.step_out, 'Exit function')
 
       -- Reverses execution to the previous instruction or line
-      vim.keymap.set('n', '<F5>', dap.step_back)
+      map('<F5>', dap.step_back, 'Go Back')
 
       -- Restart
-      vim.keymap.set('n', '<F13>', dap.restart)
-      vim.keymap.set('n', '<leader>dq', function()
-        require('dap').terminate()
-        require('dapui').close()
-        require('nvim-dap-virtual-text').toggle()
-      end)
+      map('<F7>', dap.restart, 'Restart Debugger')
 
-      dap.listeners.before.attach.dapui_config = function()
-        ui.open()
-      end
-      dap.listeners.before.launch.dapui_config = function()
-        ui.open()
+      -- Terminate
+      -- map('<leader>de', function()
+      --   dap.terminate()
+      --   dapui.close()
+      --   dap_virtual_text.toggle()
+      -- end, '[D]ebuger [E]xit')
+
+      dap.listeners.after.event_initialized.dapui_config = function()
+        dapui.open()
       end
       dap.listeners.before.event_terminated.dapui_config = function()
-        ui.close()
+        dapui.close()
       end
       dap.listeners.before.event_exited.dapui_config = function()
-        ui.close()
+        dapui.close()
       end
     end,
   },

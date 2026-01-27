@@ -48,18 +48,6 @@ require('lazy').setup {
       require('transparent').clear_prefix 'Telescope'
     end,
   },
-  -- Multi cursor config
-  {
-    'brenton-leighton/multiple-cursors.nvim',
-    version = '*',
-    opts = {},
-    keys = {
-      { '<Leader>cc', '<Cmd>MultipleCursorsAddVisualArea<CR>', mode = { 'x' }, desc = 'Add cursors to the lines of the visual area' },
-      { '<C-d>', '<Cmd>MultipleCursorsAddJumpNextMatch<CR>', mode = { 'x' }, desc = 'Add cursor and jump to next cword' },
-      { '<C-j>', '<Cmd>MultipleCursorsAddDown<CR>', mode = { 'n' }, desc = 'Add cursor and move down' },
-      { '<C-k>', '<Cmd>MultipleCursorsAddUp<CR>', mode = { 'n' }, desc = 'Add cursor and move up' },
-    },
-  },
   {
     'Diogo-ss/42-header.nvim',
     cmd = { 'Stdheader' },
