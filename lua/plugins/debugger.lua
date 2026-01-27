@@ -116,7 +116,7 @@ return {
       -- Restart
       map('<F7>', dap.restart, 'Restart Debugger')
 
-      Terminate
+      -- Terminate
       map('<leader>de', function()
         dap.terminate()
         dapui.close()
