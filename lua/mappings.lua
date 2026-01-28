@@ -104,5 +104,6 @@ A::~A()
   local lines = vim.split(classCode, '\n')
   vim.api.nvim_put(lines, 'l', true, true)
 end
-vim.keymap.set({ 'n' }, '<leader>ic', insert_new_cpp_class, { desc = '[i]nsert class' })
+vim.keymap.set({ 'n' }, '<leader>ci', insert_new_cpp_class, { desc = '[C]lass [I]nsert' })
+vim.keymap.set({ 'n' }, '<leader>co', vim.cmd.ClassOpen, { desc = '[Class] [O]pen' })
 vim.keymap.set({ 'n' }, '<leader>h', vim.cmd.Stdheader, { desc = '[header] for 42 files' })

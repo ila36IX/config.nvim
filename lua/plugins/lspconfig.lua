@@ -112,9 +112,9 @@ return {
         format = function(diagnostic)
           local diagnostic_message = {
             [vim.diagnostic.severity.ERROR] = diagnostic.message,
-            -- [vim.diagnostic.severity.WARN] = diagnostic.message,
+            [vim.diagnostic.severity.WARN] = diagnostic.message,
             -- Don't display warning message, use leader + dd to show warning details
-            [vim.diagnostic.severity.WARN] = '',
+            -- [vim.diagnostic.severity.WARN] = '',
             [vim.diagnostic.severity.INFO] = diagnostic.message,
             [vim.diagnostic.severity.HINT] = diagnostic.message,
           }
