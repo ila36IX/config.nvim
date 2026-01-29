@@ -11,8 +11,8 @@ vim.keymap.set('n', '<leader>dd', vim.diagnostic.open_float, { desc = '[D]iagnos
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
 -- Key maps for tab hondler
-vim.keymap.set('n', '<C-h>', ':tabnext<CR>', { desc = 'Go to the next tab' })
-vim.keymap.set('n', '<C-l>', ':tabprevious<CR>', { desc = 'Go to the previous tab' })
+vim.keymap.set('n', '<C-l>', ':tabnext<CR>', { desc = 'Go to the next tab' })
+vim.keymap.set('n', '<C-h>', ':tabprevious<CR>', { desc = 'Go to the previous tab' })
 
 -- Term toggle
 vim.keymap.set({ 'n', 't' }, '<A-s>', vim.cmd.TermToggle, { desc = 'Toggle [T]erminal', silent = true })
