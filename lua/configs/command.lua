@@ -32,14 +32,15 @@ end, { desc = 'Run saved command' })
 
 -- Execute in the fly
 -- Read command from the user and execute it
-vim.keymap.set('n', '<leader>rn', function()
-  local cmd
-  cmd = vim.fn.input('Run: ', '', 'shellcmd')
-  if cmd ~= '' then
-    vim.cmd('horizontal terminal ' .. cmd)
-    vim.cmd 'set number'
-  end
-end, { desc = 'Run the giving command' })
+-- vim.keymap.set('n', '<leader>rn', function()
+--   local cmd
+--   cmd = vim.fn.input('Run: ', '', 'shellcmd')
+--   if cmd ~= '' then
+--     vim.cmd('horizontal terminal ' .. cmd)
+--     vim.cmd 'set number'
+--   end
+-- end, { desc = 'Run the giving command' })
+vim.keymap.set('n', '<leader>rn', ':botright new | term ', { desc = 'Run the giving command' })
 
 -- Force stopping command execution
 vim.keymap.set({ 'n' }, '<leader>k', function()
