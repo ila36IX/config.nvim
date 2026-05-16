@@ -88,7 +88,7 @@ return {
         vim.keymap.set(mode, keys, func, { desc = desc })
       end
 
-      map('<leader>db', dap.toggle_breakpoint, '[D]ebugger [T]oggle breakpoint')
+      map('<leader>db', dap.toggle_breakpoint, '[D]ebugger toggle [B]reakpoint')
 
       -- Continues execution to the current cursor
       map('<leader>dc', dap.run_to_cursor, '[D]ebugger [C]ontinue')
