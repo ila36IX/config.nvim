@@ -49,8 +49,15 @@ vim.keymap.set({ 'n' }, '<C-Up>', ':cp<CR>', { desc = 'Previous item in Quickfix
 -- Quiting
 vim.keymap.set('n', '<leader>q', ':qall<CR>', { desc = 'Close current tab ans save' })
 vim.keymap.set('n', '<leader>Q', ':qall!<CR>', { desc = 'Close current tab ans save' })
-vim.keymap.set('n', '<leader>x', ':bd<CR>', { desc = 'Close current buffer' })
-vim.keymap.set('n', '<leader>X', ':bd!<CR>', { desc = 'Close current buffer' })
+-- vim.keymap.set('n', '<leader>x', ':bd<CR>', { desc = 'Close current buffer' })
+-- vim.keymap.set('n', '<leader>X', ':bd!<CR>', { desc = 'Close current buffer' })
+vim.keymap.set('n', '<leader>x', function()
+  vim.cmd 'silent! update'
+  require('mini.bufremove').delete(0, false)
+end, { desc = 'Close current buffer' })
+vim.keymap.set('n', '<leader>X', function()
+  require('mini.bufremove').delete(0, true)
+end, { desc = 'Close current buffer' })
 
 -- Run the make program and fill Quickfix with errors if found
 vim.keymap.set({ 'n' }, '<leader>m', vim.cmd.make, { desc = 'Make using makeprg' })
